@@ -56,13 +56,13 @@
   "connections": [
     [ "esp32:TX", "$serialMonitor:RX", "", [] ],
     [ "esp32:RX", "$serialMonitor:TX", "", [] ],
-    ["esp32:GND.1",  "btnN:2.l",  "black",  ["v-10", "h-160"]],
+    ["esp32:GND.1",  "btnN:1.r",  "black",  []],
     ["esp32:IO13",   "btnN:1.l",  "orange", ["v-130", "h-170"]],
 
-    ["esp32:GND.1",  "btnP:2.l",  "black",  ["v-10", "h-160"]],
+    ["esp32:GND.1",  "btnP:1.r",  "black",  []],
     ["esp32:IO4",    "btnP:1.l",  "yellow", ["v0", "h-170"]],
 
-    ["esp32:GND.1",  "btnK:2.l",  "black",  ["v-10", "h-160"]],
+    ["esp32:GND.1",  "btnK:1.r",  "black",  []],
     ["esp32:IO5",    "btnK:1.l",  "green",  ["v10", "h-170"]],
 
     ["esp32:3V3",    "ldr:VCC",   "red",    ["v-100", "h200"]],

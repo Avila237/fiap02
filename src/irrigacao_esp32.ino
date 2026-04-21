@@ -26,43 +26,85 @@ float ph_solo          = 7.0;    // pH calculado a partir do LDR
 float umidade_solo     = 0.0;    // Umidade lida pelo DHT22
 bool bomba_ligada      = false;  // Estado atual da bomba
 bool chuva_prevista    = false;  // Atualizado via Serial (API de clima)
+bool umidade_override_ativo = false;  // true quando umidade foi injetada via Serial
+bool ph_override_ativo      = false;  // true quando pH foi injetado via Serial
 
 // ─────────────────────────────────────────────────────────────
 // Lê os três botões e os dois sensores; atualiza as variáveis globais
 // ─────────────────────────────────────────────────────────────
 void ler_sensores() {
-  // Botões usam INPUT_PULLUP: LOW significa "pressionado" (nutriente presente)
+  // Botões — sempre lê
   nutriente_N = (digitalRead(PINO_BOTAO_N) == LOW);
   nutriente_P = (digitalRead(PINO_BOTAO_P) == LOW);
   nutriente_K = (digitalRead(PINO_BOTAO_K) == LOW);
 
-  // LDR: valor bruto 0–4095 mapeado para escala de pH 0.0–14.0
-  int valor_ldr = analogRead(PINO_LDR);
-  ph_solo = (float)map(valor_ldr, 0, 4095, 0, 14);
+  // pH — só lê do LDR se não houver override
+  if (!ph_override_ativo) {
+    int valor_ldr = analogRead(PINO_LDR);
+    ph_solo = (float)map(valor_ldr, 0, 4095, 0, 14);
+  }
 
-  // DHT22: umidade relativa do solo (0–100%)
-  float leitura = dht.readHumidity();
-  if (!isnan(leitura)) {
-    umidade_solo = leitura;
+  // Umidade — só lê do DHT se não houver override
+  if (!umidade_override_ativo) {
+    float leitura = dht.readHumidity();
+    if (!isnan(leitura)) {
+      umidade_solo = leitura;
+    }
   }
 }
 
 // ─────────────────────────────────────────────────────────────
 // Verifica mensagens chegando pela porta Serial
-// '1' → chuva prevista | '0' → sem chuva prevista
+// '1'/'0' → chuva | 'u<val>' → umidade manual | 'p<val>' → pH manual
 // ─────────────────────────────────────────────────────────────
 void processar_serial() {
-  if (Serial.available() > 0) {
-    char comando = Serial.read();
+  if (!Serial.available()) return;
 
-    if (comando == '1') {
-      chuva_prevista = true;
-      Serial.println(">> Serial recebido: chuva prevista = SIM");
-    } else if (comando == '0') {
-      chuva_prevista = false;
-      Serial.println(">> Serial recebido: chuva prevista = NÃO");
-    }
+  String comando = Serial.readStringUntil('\n');
+  comando.trim();
+
+  if (comando.length() == 0) return;
+
+  if (comando == "1") {
+    chuva_prevista = true;
+    Serial.println(">>> Chuva prevista: ATIVADA");
+    return;
   }
+  if (comando == "0") {
+    chuva_prevista = false;
+    Serial.println(">>> Chuva prevista: DESATIVADA");
+    return;
+  }
+
+  if (comando.startsWith("u") || comando.startsWith("U")) {
+    float valor = comando.substring(1).toFloat();
+    if (valor >= 0 && valor <= 100) {
+      umidade_solo = valor;
+      umidade_override_ativo = true;
+      Serial.print(">>> Umidade definida manualmente: ");
+      Serial.print(valor);
+      Serial.println("%");
+    } else {
+      Serial.println(">>> ERRO: umidade deve ser entre 0 e 100");
+    }
+    return;
+  }
+
+  if (comando.startsWith("p") || comando.startsWith("P")) {
+    float valor = comando.substring(1).toFloat();
+    if (valor >= 0 && valor <= 14) {
+      ph_solo = valor;
+      ph_override_ativo = true;
+      Serial.print(">>> pH definido manualmente: ");
+      Serial.println(valor);
+    } else {
+      Serial.println(">>> ERRO: pH deve ser entre 0 e 14");
+    }
+    return;
+  }
+
+  Serial.print(">>> Comando desconhecido: ");
+  Serial.println(comando);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -163,10 +205,16 @@ void setup() {
   pinMode(PINO_RELE, OUTPUT);
   digitalWrite(PINO_RELE, LOW);
 
+  pinMode(PINO_DHT, INPUT_PULLUP);
   dht.begin();
+  Serial.println("DHT22 inicializado no pino " + String(PINO_DHT));
 
-  Serial.println("FarmTech Solutions -- Sistema de Irrigacao Iniciado");
-  Serial.println("Envie '1' para chuva prevista, '0' para sem chuva.");
+  Serial.println("FarmTech Solutions — Sistema de Irrigacao Iniciado");
+  Serial.println("Comandos disponiveis no Serial Monitor:");
+  Serial.println("  1       -> ativar chuva prevista");
+  Serial.println("  0       -> desativar chuva prevista");
+  Serial.println("  u<val>  -> definir umidade manual (ex: u40)");
+  Serial.println("  p<val>  -> definir pH manual (ex: p6.5)");
   Serial.println();
 }
 
