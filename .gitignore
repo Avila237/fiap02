@@ -17,3 +17,6 @@ venv/
 # Chaves (IMPORTANTE!)
 *api_key*
 *.key
+
+# JSON
+*.JSON
