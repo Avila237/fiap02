@@ -34,9 +34,20 @@ bool ph_override_ativo      = false;  // true quando pH foi injetado via Serial
 // ─────────────────────────────────────────────────────────────
 void ler_sensores() {
   // Botões — sempre lê
-  nutriente_N = (digitalRead(PINO_BOTAO_N) == LOW);
-  nutriente_P = (digitalRead(PINO_BOTAO_P) == LOW);
-  nutriente_K = (digitalRead(PINO_BOTAO_K) == LOW);
+  int leitura_N = digitalRead(PINO_BOTAO_N);
+  int leitura_P = digitalRead(PINO_BOTAO_P);
+  int leitura_K = digitalRead(PINO_BOTAO_K);
+
+  Serial.print(">>> DEBUG Botões | raw N=");
+  Serial.print(leitura_N);
+  Serial.print(" P=");
+  Serial.print(leitura_P);
+  Serial.print(" K=");
+  Serial.println(leitura_K);
+
+  nutriente_N = (leitura_N == LOW);
+  nutriente_P = (leitura_P == LOW);
+  nutriente_K = (leitura_K == LOW);
 
   // pH — só lê do LDR se não houver override
   if (!ph_override_ativo) {
@@ -135,9 +146,14 @@ String decidir_bomba() {
     bomba_ligada = true;
     motivo = "solo seco (< 60%) e nutrientes presentes";
 
-  // Regra 5 — zona intermediária (60–70%): manter estado anterior (histerese)
+  // Regra 5a — solo seco (<60%) mas sem nutrientes P ou K disponíveis
+  } else if (umidade_solo < 60.0 && !nutriente_P && !nutriente_K) {
+    bomba_ligada = false;
+    motivo = "solo seco, mas sem nutrientes P ou K presentes";
+
+  // Regra 5b — zona intermediária (60-70%): mantém estado anterior (histerese)
   } else {
-    motivo = "umidade intermediária — mantendo estado anterior";
+    motivo = "umidade intermediária (60-70%) — mantendo estado anterior";
     // bomba_ligada não é alterada (histerese simples)
   }
 
