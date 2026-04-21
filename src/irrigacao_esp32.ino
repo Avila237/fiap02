@@ -6,7 +6,7 @@
 #include <DHT.h>
 
 // ── Definições de pinos ──────────────────────────────────────
-#define PINO_BOTAO_N   15   // Nutriente N (INPUT_PULLUP — LOW = pressionado)
+#define PINO_BOTAO_N   13   // Nutriente N (INPUT_PULLUP — LOW = pressionado)
 #define PINO_BOTAO_P    4   // Nutriente P (INPUT_PULLUP — LOW = pressionado)
 #define PINO_BOTAO_K    5   // Nutriente K (INPUT_PULLUP — LOW = pressionado)
 #define PINO_LDR       34   // LDR representa o pH do solo (leitura analógica)
