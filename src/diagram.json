@@ -3,48 +3,30 @@
   "author": "FarmTech Solutions — FIAP Fase 2",
   "editor": "wokwi",
   "parts": [
-    {
-      "type": "board-esp32-devkit-c-v4",
-      "id": "esp32",
-      "top": 140,
-      "left": 220,
-      "attrs": {}
-    },
+    { "type": "board-esp32-devkit-c-v4", "id": "esp32", "top": 140, "left": 220, "attrs": {} },
     {
       "type": "wokwi-pushbutton",
       "id": "btnN",
-      "top": 20,
-      "left": 0,
+      "top": 102.2,
+      "left": 9.6,
       "attrs": { "color": "green", "label": "N" }
     },
     {
       "type": "wokwi-pushbutton",
       "id": "btnP",
-      "top": 100,
-      "left": 0,
+      "top": 169.4,
+      "left": 9.6,
       "attrs": { "color": "green", "label": "P" }
     },
     {
       "type": "wokwi-pushbutton",
       "id": "btnK",
-      "top": 180,
-      "left": 0,
+      "top": 265.4,
+      "left": -19.2,
       "attrs": { "color": "green", "label": "K" }
     },
-    {
-      "type": "wokwi-photoresistor-sensor",
-      "id": "ldr",
-      "top": 20,
-      "left": 480,
-      "attrs": {}
-    },
-    {
-      "type": "wokwi-dht22",
-      "id": "dht22",
-      "top": 300,
-      "left": 480,
-      "attrs": {}
-    },
+    { "type": "wokwi-photoresistor-sensor", "id": "ldr", "top": 20, "left": 480, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht22", "top": 300, "left": 480, "attrs": {} },
     {
       "type": "wokwi-relay-module",
       "id": "rele",
@@ -56,25 +38,24 @@
   "connections": [
     [ "esp32:TX", "$serialMonitor:RX", "", [] ],
     [ "esp32:RX", "$serialMonitor:TX", "", [] ],
-    ["esp32:GND.1",  "btnN:2.r",  "black",  []],
-    ["esp32:IO13",   "btnN:1.l",  "orange", ["v-130", "h-170"]],
-
-    ["esp32:GND.1",  "btnP:2.r",  "black",  []],
-    ["esp32:IO4",    "btnP:1.l",  "yellow", ["v0", "h-170"]],
-
-    ["esp32:GND.1",  "btnK:2.r",  "black",  []],
-    ["esp32:IO5",    "btnK:1.l",  "green",  ["v10", "h-170"]],
-
-    ["esp32:3V3",    "ldr:VCC",   "red",    ["v-100", "h200"]],
-    ["ldr:AO",       "esp32:IO34", "blue",   ["v0", "h-60"]],
-    ["ldr:GND",      "esp32:GND.2","black", ["v30", "h-180"]],
-
-    ["esp32:3V3",    "dht22:VCC", "red",    ["v0", "h200"]],
-    ["esp32:GND.2",  "dht22:GND", "black",  ["v10", "h200"]],
-    ["esp32:IO18",   "dht22:SDA", "cyan",   ["v0", "h160"]],
-
-    ["esp32:3V3",    "rele:VCC",  "red",    ["v200", "h-160"]],
-    ["esp32:GND.1",  "rele:GND",  "black",  ["v210", "h-160"]],
-    ["esp32:IO19",   "rele:IN",   "magenta",["v180", "h-180"]]
-  ]
+    [ "esp32:IO13", "btnN:1.l", "orange", [ "v-130", "h-170" ] ],
+    [ "esp32:IO4", "btnP:1.l", "yellow", [ "v0", "h-170" ] ],
+    [ "esp32:IO5", "btnK:1.l", "green", [ "v10", "h-170" ] ],
+    [ "esp32:3V3", "ldr:VCC", "white", [ "v-100", "h200" ] ],
+    [ "ldr:AO", "esp32:IO34", "blue", [ "v0", "h-60" ] ],
+    [ "ldr:GND", "esp32:GND.2", "black", [ "v30", "h-180" ] ],
+    [ "esp32:3V3", "dht22:VCC", "white", [ "v0", "h200" ] ],
+    [ "esp32:GND.2", "dht22:GND", "black", [ "v10", "h200" ] ],
+    [ "esp32:IO18", "dht22:SDA", "cyan", [ "v0", "h160" ] ],
+    [ "esp32:3V3", "rele:VCC", "red", [ "v200", "h-160" ] ],
+    [ "esp32:GND.1", "rele:GND", "black", [ "v210", "h-160" ] ],
+    [ "esp32:IO19", "rele:IN", "magenta", [ "v180", "h-180" ] ],
+    [ "btnN:2.l", "esp32:GND.1", "green", [ "h0" ] ],
+    [ "btnP:2.l", "esp32:GND.1", "green", [ "h0" ] ],
+    [ "btnK:2.l", "esp32:GND.1", "green", [ "h0" ] ],
+    [ "btnN:1.r", "esp32:13", "green", [ "v0" ] ],
+    [ "btnP:1.r", "esp32:4", "green", [ "v0" ] ],
+    [ "btnK:1.r", "esp32:5", "green", [ "v0" ] ]
+  ],
+  "dependencies": {}
 }
