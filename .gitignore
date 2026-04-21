@@ -20,3 +20,4 @@ venv/
 
 # JSON
 *.JSON
+!src/diagram.json
