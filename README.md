@@ -254,7 +254,7 @@ O vídeo demonstra:
 | Nome | RM |
 |---|---|
 | *Guilherme Avila* | *mr571294* |
-| *[inserir nome]* | *[inserir RM]* |
+| *Kainan Bilibio* | *rm570594* |
 
 
 ---
