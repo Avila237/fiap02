@@ -232,7 +232,7 @@ Com a simulação Wokwi aberta, **clique na caixa do Monitor Serial** e digite `
 
 ![Circuito Wokwi — visão geral](assets/circuito_wokwi.png)
 
-![Simulação em execução — Monitor Serial](assets/simulacao_rodando.png)
+![Simulação em execução — Monitor Serial](https://youtu.be/pMzDIXv-jOE)
 
 ---
 
