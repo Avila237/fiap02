@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Ambiente
+.env
+*.env
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Chaves (IMPORTANTE!)
+*api_key*
+*.key
