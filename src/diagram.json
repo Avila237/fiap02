@@ -39,13 +39,6 @@
       "attrs": {}
     },
     {
-      "type": "wokwi-resistor",
-      "id": "res1",
-      "top": 80,
-      "left": 480,
-      "attrs": { "value": "10000" }
-    },
-    {
       "type": "wokwi-dht22",
       "id": "dht22",
       "top": 300,
@@ -73,9 +66,8 @@
     ["esp32:IO5",    "btnK:1.l",  "green",  ["v10", "h-170"]],
 
     ["esp32:3V3",    "ldr:VCC",   "red",    ["v-100", "h200"]],
-    ["ldr:DO",       "res1:1",    "purple", ["v10"]],
-    ["res1:2",       "esp32:GND.2","black", ["v30", "h-180"]],
-    ["ldr:DO",       "esp32:IO34","blue",   ["v0", "h-60"]],
+    ["ldr:AO",       "esp32:IO34", "blue",   ["v0", "h-60"]],
+    ["ldr:GND",      "esp32:GND.2","black", ["v30", "h-180"]],
 
     ["esp32:3V3",    "dht22:VCC", "red",    ["v0", "h200"]],
     ["esp32:GND.2",  "dht22:GND", "black",  ["v10", "h200"]],
